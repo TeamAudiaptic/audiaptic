@@ -19,3 +19,17 @@ entries:
     emoji: 🔧
     label: Maintenance
     message: Bootstrapped initial server environment.
+- id: 3
+  pr: 22
+  author: shackhorn
+  time: '2026-09-29T21:33:34+00:00'
+  url: https://github.com/TeamAudiaptic/audiaptic-server/pull/22
+  changes:
+  - type: refactor
+    emoji: ♻️
+    label: Refactor
+    message: Moved API to /api
+  - type: maintenance
+    emoji: 🔧
+    label: Maintenance
+    message: Added portal at /
