@@ -1,15 +1,33 @@
 import { useState } from 'react'
+import NavBar, { type Page } from './components/NavBar.tsx'
 import Login from './pages/Login.tsx'
+import Media from './pages/Media.tsx'
 import Upload from './pages/Upload.tsx'
 
 function App() {
   const [user, setUser] = useState<string | null>(null)
+  const [page, setPage] = useState<Page>('upload')
 
   if (!user) {
     return <Login onLogin={setUser} />
   }
 
-  return <Upload username={user} onLogout={() => setUser(null)} />
+  const handleLogout = () => {
+    setUser(null)
+    setPage('upload')
+  }
+
+  return (
+    <>
+      <NavBar
+        username={user}
+        page={page}
+        onNavigate={setPage}
+        onLogout={handleLogout}
+      />
+      {page === 'upload' ? <Upload /> : <Media />}
+    </>
+  )
 }
 
 export default App

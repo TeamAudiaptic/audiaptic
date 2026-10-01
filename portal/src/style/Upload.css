@@ -5,24 +5,6 @@
   padding: 16px;
 }
 
-.upload-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-  font-size: 15px;
-}
-
-.upload-logout {
-  font: inherit;
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: transparent;
-  color: var(--text-h);
-  cursor: pointer;
-}
-
 .upload-card {
   width: 100%;
   max-width: 480px;

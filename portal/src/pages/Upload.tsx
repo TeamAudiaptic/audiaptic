@@ -1,11 +1,6 @@
 import { useState, type ChangeEvent, type DragEvent, type SubmitEvent } from 'react'
 import '../style/Upload.css'
 
-type UploadProps = {
-  username: string
-  onLogout: () => void
-}
-
 // TODO: replace with a real upload to Cloudflare R2
 async function uploadFile(file: File): Promise<void> {
   console.log('Upload not connected yet:', file.name)
@@ -17,7 +12,7 @@ function formatSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-function Upload({ username, onLogout }: UploadProps) {
+function Upload() {
   const [file, setFile] = useState<File | null>(null)
   const [dragging, setDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -50,13 +45,6 @@ function Upload({ username, onLogout }: UploadProps) {
 
   return (
     <section className="upload">
-      <header className="upload-header">
-        <span>Signed in as <strong>{username}</strong></span>
-        <button type="button" className="upload-logout" onClick={onLogout}>
-          Log out
-        </button>
-      </header>
-
       <form className="upload-card" onSubmit={handleSubmit}>
         <h1>Upload a file</h1>
 
