@@ -1,6 +1,6 @@
 import '../style/NavBar.css'
 
-export type Page = 'upload' | 'media'
+export type Page = 'upload' | 'media' | 'sessions'
 
 type NavBarProps = {
   username: string
@@ -12,6 +12,7 @@ type NavBarProps = {
 const links: { page: Page; label: string }[] = [
   { page: 'upload', label: 'Upload' },
   { page: 'media', label: 'Media' },
+  { page: 'sessions', label: 'Manage Sessions' },
 ]
 
 function NavBar({ username, page, onNavigate, onLogout }: NavBarProps) {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import NavBar, { type Page } from './components/NavBar.tsx'
 import Login from './pages/Login.tsx'
+import ManageSessions from './pages/ManageSessions.tsx'
 import Media from './pages/Media.tsx'
 import Upload from './pages/Upload.tsx'
 
@@ -25,7 +26,9 @@ function App() {
         onNavigate={setPage}
         onLogout={handleLogout}
       />
-      {page === 'upload' ? <Upload /> : <Media />}
+      {page === 'upload' && <Upload />}
+      {page === 'media' && <Media />}
+      {page === 'sessions' && <ManageSessions />}
     </>
   )
 }
