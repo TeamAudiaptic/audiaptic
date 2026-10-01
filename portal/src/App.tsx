@@ -2,10 +2,16 @@ import { useState } from 'react'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
-import './App.css'
+import './style/App.css'
+import Login from './pages/Login.tsx'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [user, setUser] = useState<string | null>(null)
+
+  if (!user) {
+    return <Login onLogin={setUser} />
+  }
 
   return (
     <>
