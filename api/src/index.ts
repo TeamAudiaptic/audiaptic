@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import fastifyWebsocket from '@fastify/websocket';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { validatorCompiler, serializerCompiler, jsonSchemaTransform } from 'fastify-type-provider-zod';
 import fastifySwagger from '@fastify/swagger';
@@ -6,9 +7,10 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
-import { env } from './env.js';
-import { APIUser, APIUserResponse201 } from './api-schemas/user.api.schema.js';
-import { APIHelloWorld, APIHelloWorldResponse200 } from './api-schemas/helloworld.api.schema.js';
+import { env } from './env';
+import { APIUser, APIUserResponse201 } from './api-schemas/user.api.schema';
+import { APIHelloWorld, APIHelloWorldResponse200 } from './api-schemas/helloWorld.api.schema';
+import { performerRoute } from './sockets/routes/performer.route';
 
 const app = Fastify({
     logger: true,
@@ -17,9 +19,9 @@ const app = Fastify({
 // Set up Zod validation compilers for Fastify
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
-
+app.register(fastifyWebsocket)
 // 1. Register the core Swagger plugin
-await app.register(fastifySwagger, {
+app.register(fastifySwagger, {
     openapi: {
         info: {
             title: 'Distributed Audio-Visual-Haptic Interface Server API',
@@ -35,7 +37,7 @@ await app.register(fastifySwagger, {
 });
 
 // 2. Register the Swagger UI interface (accessible locally at http://localhost:3000/docs)
-await app.register(fastifySwaggerUi, {
+app.register(fastifySwaggerUi, {
     routePrefix: '/docs',
 });
 
@@ -52,26 +54,8 @@ app.route({
     }
 });
 
-// Example route using Zod for validation & automatic TypeScript inference
-app.route({
-    method: 'POST',
-    url: '/api/users',
-    schema: APIUser.route,
-    handler: async (request, reply) => {
-        // Note: with Type Provider active, request.body is implicitly typed by Fastify
-        const { username, email } = request.body;
 
-        app.log.info(`Creating user ${username} with email ${email}`);
-
-        const response: APIUserResponse201 = {
-            success: true,
-            id: 'generated-uuid-here',
-        };
-
-        return reply.status(201).send(response);
-    },
-});
-
+app.register(performerRoute)
 // Fastify must bind to 0.0.0.0 inside Docker containers
 const start = async () => {
     try {
