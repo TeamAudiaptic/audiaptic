@@ -115,7 +115,7 @@ export const UNKNOWN_EVENT_ID = 'unknown';
 export function ack(eventId: string, status: 200 | 202): APIBaseEventResponse200 | APIBaseEventResponse202;
 export function ack(eventId: string, status: 400 | 422 | 500, error: string[]): APIAck;
 export function ack(eventId: string, status: 200 | 202 | 400 | 422 | 500, error?: string[]): APIAck {
-  return status === 202
+  return status === 200 || status === 202
     ? { type: 'ack', eventId, status }
     : { type: 'ack', eventId, status, error: error ?? [] } as APIAck;
 }
