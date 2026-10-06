@@ -33,3 +33,17 @@ entries:
     emoji: 🔧
     label: Maintenance
     message: Added portal at /
+- id: 4
+  pr: 25
+  author: shackhorn
+  time: '2026-10-06T19:54:20+00:00'
+  url: https://github.com/TeamAudiaptic/audiaptic-server/pull/25
+  changes:
+  - type: feature
+    emoji: ✨
+    label: Feature
+    message: The server now "understands" the difference between ``audio``, ``caption``, ``color``, ``haptic``, ``image``, ``ping``, and ``torch`` event types. Right now, only ``ping`` is truly "supported".
+  - type: maintenance
+    emoji: 🔧
+    label: Maintenance
+    message: Modified workflow file to generate an openapi spec json.
