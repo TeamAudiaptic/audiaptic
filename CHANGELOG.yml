@@ -47,3 +47,29 @@ entries:
     emoji: 🔧
     label: Maintenance
     message: Modified workflow file to generate an openapi spec json.
+- id: 5
+  pr: 33
+  author: shackhorn
+  time: '2026-10-06T22:07:41+00:00'
+  url: https://github.com/TeamAudiaptic/audiaptic-server/pull/33
+  changes:
+  - type: feature
+    emoji: ✨
+    label: Feature
+    message: The performer WebSocket is now documented with an AsyncAPI spec generated from the event schemas, synced to the docs site automatically.
+  - type: feature
+    emoji: ✨
+    label: Feature
+    message: One-command local dev environment (`run_me.bat` / `teardown.bat`) that runs the portal and API behind Caddy, matching production URLs. Use `run_me.bat`. Only use `teardown.bat` if it gets stuck.
+  - type: fix
+    emoji: 🐛
+    label: Fix
+    message: The generated OpenAPI spec was empty because routes were registered before Swagger loaded.
+  - type: fix
+    emoji: 🐛
+    label: Fix
+    message: '`npm run export:schema` failed on Windows.'
+  - type: maintenance
+    emoji: 🔧
+    label: Maintenance
+    message: The docs sync workflow now also pushes `asyncapi.json`. Added `cross-env`. Build output (`dist/`) is now git-ignored.
