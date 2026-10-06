@@ -6,7 +6,7 @@ import { z } from 'zod';
 // Two things differ from a REST schema:
 //   - `payload` instead of `body`, since a socket frame has no HTTP body.
 //   - the response keys are the ack status codes from the handshake strategy
-//     (202/400/422/500) rather than HTTP statuses, because every inbound event
+//     (200/202/400/422/500) rather than HTTP statuses, because every inbound event
 //     is answered with one ack.
 
 /** Milliseconds since the Unix epoch. */
@@ -57,6 +57,12 @@ export class APIBaseEvent {
     }),
     // The ack the server sends back after processing the event.
     response: {
+      // Understood.
+      200: z.object({
+        type: z.literal('ack'),
+        eventId: z.string(),
+        status: z.literal(200),
+      }),
       // Accepted and fanned out to devices.
       202: z.object({
         type: z.literal('ack'),
@@ -89,6 +95,7 @@ export class APIBaseEvent {
 }
 
 export type APIBaseEventPayload = z.infer<typeof APIBaseEvent.route.payload>;
+export type APIBaseEventResponse200 = z.infer<typeof APIBaseEvent.route.response[200]>;
 export type APIBaseEventResponse202 = z.infer<typeof APIBaseEvent.route.response[202]>;
 export type APIBaseEventResponse400 = z.infer<typeof APIBaseEvent.route.response[400]>;
 export type APIBaseEventResponse422 = z.infer<typeof APIBaseEvent.route.response[422]>;
@@ -96,6 +103,7 @@ export type APIBaseEventResponse500 = z.infer<typeof APIBaseEvent.route.response
 
 /** Any ack, whatever the status. */
 export type APIAck =
+  | APIBaseEventResponse200
   | APIBaseEventResponse202
   | APIBaseEventResponse400
   | APIBaseEventResponse422
@@ -104,9 +112,9 @@ export type APIAck =
 /** Used when eventId can't be recovered from a malformed frame. */
 export const UNKNOWN_EVENT_ID = 'unknown';
 
-export function ack(eventId: string, status: 202): APIBaseEventResponse202;
+export function ack(eventId: string, status: 200 | 202): APIBaseEventResponse200 | APIBaseEventResponse202;
 export function ack(eventId: string, status: 400 | 422 | 500, error: string[]): APIAck;
-export function ack(eventId: string, status: 202 | 400 | 422 | 500, error?: string[]): APIAck {
+export function ack(eventId: string, status: 200 | 202 | 400 | 422 | 500, error?: string[]): APIAck {
   return status === 202
     ? { type: 'ack', eventId, status }
     : { type: 'ack', eventId, status, error: error ?? [] } as APIAck;
