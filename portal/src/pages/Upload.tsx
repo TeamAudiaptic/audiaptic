@@ -1,9 +1,28 @@
 import { useState, type ChangeEvent, type DragEvent, type SubmitEvent } from 'react'
 import '../style/Upload.css'
 
-// TODO: replace with a real upload to Cloudflare R2
-async function uploadFile(file: File): Promise<void> {
-  console.log('Upload not connected yet:', file.name)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+
+async function uploadFile(file: File): Promise<{ success: boolean; message: string }> {
+  const response = await fetch(`${API_URL}/api/r2/upload`, {
+    method: 'POST',
+    headers: {
+      'x-filename': file.name,
+      'content-type': file.type || 'application/octet-stream',
+    },
+    body: file,
+  })
+
+  const result = await response.json()
+
+  if (!response.ok) {
+    throw new Error(result.error || 'Upload failed')
+  }
+
+  return {
+    success: true,
+    message: result.message,
+  }
 }
 
 function formatSize(bytes: number) {
@@ -40,7 +59,7 @@ function Upload() {
     setUploading(true)
     await uploadFile(file)
     setUploading(false)
-    setMessage(`"${file.name}" is ready. Upload to storage isn't connected yet.`)
+    setMessage(`"${file.name}" is ready. It has been uploaded to the session storage.`)
   }
 
   return (
