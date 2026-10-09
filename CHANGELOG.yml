@@ -73,3 +73,13 @@ entries:
     emoji: 🔧
     label: Maintenance
     message: The docs sync workflow now also pushes `asyncapi.json`. Added `cross-env`. Build output (`dist/`) is now git-ignored.
+- id: 6
+  pr: 34
+  author: Josh-mitch
+  time: '2026-10-09T00:31:36+00:00'
+  url: https://github.com/TeamAudiaptic/audiaptic-server/pull/34
+  changes:
+  - type: fix
+    emoji: 🐛
+    label: Fix
+    message: Only serializing messages once so it's easier for the client to interpret.
