@@ -33,7 +33,7 @@ export async function performerRoute(app: FastifyInstance) {
             
             // all is good, send it to the performer event handler!
             const response = performerEventHandler(parsedEvent.data);
-            send(JSON.stringify(response));
+            send(response);
         });
     });
 }
